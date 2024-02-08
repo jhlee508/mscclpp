@@ -46,13 +46,6 @@ RegisteredMemory::Impl::Impl(void* data, size_t size, TransportFlags transports,
       INFO(MSCCLPP_NET, "IB mr for address %p with size %ld is registered", data, size);
     };
     if (transports.has(Transport::IB0)) addIb(Transport::IB0);
-    if (transports.has(Transport::IB1)) addIb(Transport::IB1);
-    if (transports.has(Transport::IB2)) addIb(Transport::IB2);
-    if (transports.has(Transport::IB3)) addIb(Transport::IB3);
-    if (transports.has(Transport::IB4)) addIb(Transport::IB4);
-    if (transports.has(Transport::IB5)) addIb(Transport::IB5);
-    if (transports.has(Transport::IB6)) addIb(Transport::IB6);
-    if (transports.has(Transport::IB7)) addIb(Transport::IB7);
   }
 }
 
