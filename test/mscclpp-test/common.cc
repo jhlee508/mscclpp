@@ -23,9 +23,7 @@
 
 int isMainProc = 0;
 
-mscclpp::Transport IBs[] = {mscclpp::Transport::IB0, mscclpp::Transport::IB1, mscclpp::Transport::IB2,
-                            mscclpp::Transport::IB3, mscclpp::Transport::IB4, mscclpp::Transport::IB5,
-                            mscclpp::Transport::IB6, mscclpp::Transport::IB7};
+mscclpp::Transport IBs[] = {mscclpp::Transport::IB0};
 
 #define PRINT(__message)                    \
   do {                                      \
