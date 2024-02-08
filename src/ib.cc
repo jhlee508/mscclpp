@@ -31,6 +31,44 @@ static bool checkNvPeerMemLoaded() {
 
 #endif  // !defined(__HIP_PLATFORM_AMD__)
 
+// Get IB devices only if it is active
+static struct ibv_device** ibv_get_active_device_list(int *num_active_devices) {
+  struct ibv_device** dev_list = ibv_get_device_list(NULL);
+  if (!dev_list) {
+    fprintf(stderr, "Failed to get IB devices list\n");
+    *num_active_devices = 0;
+    return NULL;
+  }
+
+  int num_devices = 0;
+  struct ibv_device** active_dev_list = (struct ibv_device**)calloc(1, sizeof(struct ibv_device*)); // Initial allocation
+
+  for (int i = 0; dev_list[i]; ++i) {
+    struct ibv_context *context = ibv_open_device(dev_list[i]);
+    if (!context) {
+      fprintf(stderr, "Failed to open device %s\n", ibv_get_device_name(dev_list[i]));
+      continue;
+    }
+
+    struct ibv_device_attr device_attr;
+    if (ibv_query_device(context, &device_attr) == 0) {
+      for (int port_num = 1; port_num <= device_attr.phys_port_cnt; ++port_num) {
+        struct ibv_port_attr port_attr;
+        if (ibv_query_port(context, port_num, &port_attr) == 0 && port_attr.state == IBV_PORT_ACTIVE) {
+          active_dev_list[num_devices++] = dev_list[i]; // Add to active device list
+          active_dev_list = (struct ibv_device**)realloc(active_dev_list, (num_devices + 1) * sizeof(struct ibv_device*)); // Increase list size
+          break; // No need to check other ports if one is active
+        }
+      }
+    }
+    ibv_close_device(context);
+  }
+
+  *num_active_devices = num_devices;
+  // ibv_free_device_list(dev_list); // Do not free the original list as it is used by the active device list
+  return active_dev_list; // Return the filtered list
+}
+
 namespace mscclpp {
 
 IbMr::IbMr(ibv_pd* pd, void* buff, std::size_t size) : buff(buff) {
@@ -301,7 +339,7 @@ IbCtx::IbCtx(const std::string& devName) : devName(devName) {
   }
 #endif  // !defined(__HIP_PLATFORM_AMD__)
   int num;
-  struct ibv_device** devices = ibv_get_device_list(&num);
+  struct ibv_device** devices = ibv_get_active_device_list(&num);
   for (int i = 0; i < num; ++i) {
     if (std::string(devices[i]->name) == devName) {
       this->ctx = ibv_open_device(devices[i]);
@@ -382,7 +420,7 @@ const std::string& IbCtx::getDevName() const { return this->devName; }
 
 MSCCLPP_API_CPP int getIBDeviceCount() {
   int num;
-  ibv_get_device_list(&num);
+  ibv_get_active_device_list(&num);
   return num;
 }
 
@@ -441,7 +479,7 @@ MSCCLPP_API_CPP std::string getIBDeviceName(Transport ibTransport) {
   }
 
   int num;
-  struct ibv_device** devices = ibv_get_device_list(&num);
+  struct ibv_device** devices = ibv_get_active_device_list(&num);
   if (ibTransportIndex >= num) {
     std::stringstream ss;
     ss << "IB transport out of range: " << ibTransportIndex << " >= " << num;
@@ -452,7 +490,7 @@ MSCCLPP_API_CPP std::string getIBDeviceName(Transport ibTransport) {
 
 MSCCLPP_API_CPP Transport getIBTransportByDeviceName(const std::string& ibDeviceName) {
   int num;
-  struct ibv_device** devices = ibv_get_device_list(&num);
+  struct ibv_device** devices = ibv_get_active_device_list(&num);
   for (int i = 0; i < num; ++i) {
     if (ibDeviceName == devices[i]->name) {
       switch (i) {  // TODO: get rid of this ugly switch
