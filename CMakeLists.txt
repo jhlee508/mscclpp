@@ -70,7 +70,8 @@ if(USE_CUDA)
 
     # Set CUDA architectures
     if(CUDAToolkit_VERSION_MAJOR GREATER_EQUAL 11)
-        set(CMAKE_CUDA_ARCHITECTURES 80)
+        set(DEFAULT_CUDA_ARCH 80)
+        set(CMAKE_CUDA_ARCHITECTURES ${DEFAULT_CUDA_ARCH} CACHE STRING "Set CUDA architectures")
     endif()
 
     # Hopper architecture
@@ -85,7 +86,9 @@ else()
     set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -Wall -Wextra")
     project(mscclpp LANGUAGES CXX HIP)
 
-    set(CMAKE_HIP_ARCHITECTURES gfx90a gfx941 gfx942)
+    # Set HIP architectures
+    set(DEFAULT_HIP_ARCH gfx90a gfx941 gfx942)
+    set(CMAKE_HIP_ARCHITECTURES ${DEFAULT_HIP_ARCH} CACHE STRING "Set HIP architectures")
 
     set(GPU_LIBRARIES hip::host)
     set(GPU_INCLUDE_DIRS ${hip_INCLUDE_DIRS})
