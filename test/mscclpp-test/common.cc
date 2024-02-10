@@ -364,7 +364,7 @@ void BaseTestEngine::setupMeshConnectionsInternal(
   const int rank = args_.rank;
   const int nRanksPerNode = args_.nRanksPerNode;
   const int thisNode = rank / nRanksPerNode;
-  const mscclpp::Transport ibTransport = IBs[args_.gpuNum];
+  const mscclpp::Transport ibTransport = IBs[0];
   std::vector<mscclpp::NonblockingFuture<std::shared_ptr<mscclpp::Connection>>> connectionFutures;
 
   auto rankToNode = [&](int rank) { return rank / nRanksPerNode; };
@@ -397,7 +397,7 @@ void BaseTestEngine::setupMeshConnectionsInternal(
 void BaseTestEngine::setupMeshConnections(std::vector<DeviceHandle<mscclpp::SimpleProxyChannel>>& proxyChannels,
                                           void* inputBuff, size_t inputBuffBytes, void* outputBuff,
                                           size_t outputBuffBytes, SetupChannelFunc setupChannel) {
-  const mscclpp::TransportFlags allTransports = mscclpp::Transport::CudaIpc | IBs[args_.gpuNum];
+  const mscclpp::TransportFlags allTransports = mscclpp::Transport::CudaIpc | IBs[0];
   mscclpp::RegisteredMemory inputBufRegMem = comm_->registerMemory(inputBuff, inputBuffBytes, allTransports);
   mscclpp::RegisteredMemory outputBufRegMem;
   if (outputBuff) {
@@ -427,7 +427,7 @@ void BaseTestEngine::setupMeshConnections(std::vector<DeviceHandle<mscclpp::Simp
 void BaseTestEngine::setupMeshConnections(std::vector<mscclpp::SmChannel>& smChannels, void* inputBuff,
                                           size_t inputBuffBytes, void* outputBuff, size_t outputBuffBytes,
                                           ChannelSemantic semantic) {
-  const mscclpp::TransportFlags allTransports = mscclpp::Transport::CudaIpc | IBs[args_.gpuNum];
+  const mscclpp::TransportFlags allTransports = mscclpp::Transport::CudaIpc | IBs[0];
   mscclpp::RegisteredMemory inputBufRegMem = comm_->registerMemory(inputBuff, inputBuffBytes, allTransports);
   mscclpp::RegisteredMemory getPacketBufRegMem;
   mscclpp::RegisteredMemory outputBufRegMem;
@@ -463,7 +463,7 @@ void BaseTestEngine::setupMeshConnections(std::vector<mscclpp::SmChannel>& smCha
                                           void* inputBuff, size_t inputBuffBytes, void* putPacketBuff,
                                           size_t putPacketBuffBytes, void* getPacketBuff, size_t getPacketBuffBytes,
                                           void* outputBuff, size_t outputBuffBytes) {
-  const mscclpp::TransportFlags allTransports = mscclpp::Transport::CudaIpc | IBs[args_.gpuNum];
+  const mscclpp::TransportFlags allTransports = mscclpp::Transport::CudaIpc | IBs[0];
   mscclpp::RegisteredMemory inputBufRegMem = comm_->registerMemory(inputBuff, inputBuffBytes, allTransports);
   mscclpp::RegisteredMemory putPacketBufRegMem;
   mscclpp::RegisteredMemory getPacketBufRegMem;
