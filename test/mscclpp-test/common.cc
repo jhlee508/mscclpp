@@ -426,7 +426,7 @@ void BaseTestEngine::setupMeshConnections(std::vector<DeviceHandle<mscclpp::Simp
 
 void BaseTestEngine::setupMeshConnections(std::vector<mscclpp::SmChannel>& smChannels, void* inputBuff,
                                           size_t inputBuffBytes, void* outputBuff, size_t outputBuffBytes,
-                                          ChannelSemantic semantic) {
+                                          ChannelSemantic semantic, size_t nChannelPerConnection) {
   const mscclpp::TransportFlags allTransports = mscclpp::Transport::CudaIpc | IBs[0];
   mscclpp::RegisteredMemory inputBufRegMem = comm_->registerMemory(inputBuff, inputBuffBytes, allTransports);
   mscclpp::RegisteredMemory getPacketBufRegMem;
