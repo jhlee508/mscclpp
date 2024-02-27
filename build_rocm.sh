@@ -2,7 +2,8 @@
 
 mkdir -p build && cd build
 
-cmake -DCMAKE_BUILD_TYPE=Release \
+CXX=/opt/rocm/bin/hipcc \
+    cmake -DCMAKE_BUILD_TYPE=Release \
     -DBUILD_PYTHON_BINDINGS=OFF \
     -DBYPASS_GPU_CHECK=ON \
     -DUSE_ROCM=ON \
