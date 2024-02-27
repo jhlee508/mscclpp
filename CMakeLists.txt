@@ -84,13 +84,13 @@ if(USE_CUDA)
 else()
     set(CMAKE_HIP_STANDARD 17)
     set(CMAKE_HIP_FLAGS "${CMAKE_HIP_FLAGS} -Wall -Wextra")
-    project(mscclpp LANGUAGES CXX HIP)
+    project(mscclpp LANGUAGES CXX)
 
     # Set HIP architectures
     set(DEFAULT_HIP_ARCH gfx90a gfx941 gfx942)
     set(CMAKE_HIP_ARCHITECTURES ${DEFAULT_HIP_ARCH} CACHE STRING "Set HIP architectures")
 
-    set(GPU_LIBRARIES hip::host)
+    set(GPU_LIBRARIES hip::device)
     set(GPU_INCLUDE_DIRS ${hip_INCLUDE_DIRS})
 endif()
 
