@@ -449,6 +449,27 @@ MSCCLPP_API_CPP std::string getIBDeviceName(Transport ibTransport) {
     case Transport::IB0:
       ibTransportIndex = 0;
       break;
+    case Transport::IB1:
+      ibTransportIndex = 1;
+      break;
+    case Transport::IB2:
+      ibTransportIndex = 2;
+      break;
+    case Transport::IB3:
+      ibTransportIndex = 3;
+      break;
+    case Transport::IB4:
+      ibTransportIndex = 4;
+      break;
+    case Transport::IB5:
+      ibTransportIndex = 5;
+      break;
+    case Transport::IB6:
+      ibTransportIndex = 6;
+      break;
+    case Transport::IB7:
+      ibTransportIndex = 7;
+      break;
     default:
       throw std::invalid_argument("Not an IB transport");
   }
@@ -475,6 +496,20 @@ MSCCLPP_API_CPP Transport getIBTransportByDeviceName(const std::string& ibDevice
       switch (i) {  // TODO: get rid of this ugly switch
         case 0:
           return Transport::IB0;
+        case 1:
+          return Transport::IB1;
+        case 2:
+          return Transport::IB2;
+        case 3:
+          return Transport::IB3;
+        case 4:
+          return Transport::IB4;
+        case 5:
+          return Transport::IB5;
+        case 6:
+          return Transport::IB6;
+        case 7:
+          return Transport::IB7;
         default:
           throw std::out_of_range("IB device index out of range");
       }

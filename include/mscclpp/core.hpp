@@ -131,13 +131,20 @@ enum class Transport {
   CudaIpc,       // CUDA IPC transport type.
   Nvls,          // NVLS transport type.
   IB0,           // InfiniBand device 0 transport type.
+  IB1,           // InfiniBand device 1 transport type.
+  IB2,           // InfiniBand device 2 transport type.
+  IB3,           // InfiniBand device 3 transport type.
+  IB4,           // InfiniBand device 4 transport type.
+  IB5,           // InfiniBand device 5 transport type.
+  IB6,           // InfiniBand device 6 transport type.
+  IB7,           // InfiniBand device 7 transport type.
   NumTransports  // The number of transports.
 };
 
 const std::string TransportNames[] = {"UNK", "IPC", "NVLS", "IB0", "NUM"};
 
 namespace detail {
-const size_t TransportFlagsSize = 4;
+const size_t TransportFlagsSize = 11;
 static_assert(TransportFlagsSize == static_cast<size_t>(Transport::NumTransports),
               "TransportFlagsSize must match the number of transports");
 /// Bitset for storing transport flags.

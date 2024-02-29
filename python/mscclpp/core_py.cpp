@@ -75,6 +75,13 @@ void register_core(nb::module_& m) {
       .value("CudaIpc", Transport::CudaIpc)
       .value("Nvls", Transport::Nvls)
       .value("IB0", Transport::IB0)
+      .value("IB1", Transport::IB1)
+      .value("IB2", Transport::IB2)
+      .value("IB3", Transport::IB3)
+      .value("IB4", Transport::IB4)
+      .value("IB5", Transport::IB5)
+      .value("IB6", Transport::IB6)
+      .value("IB7", Transport::IB7)
       .value("NumTransports", Transport::NumTransports);
 
   nb::class_<TransportFlags>(m, "TransportFlags")

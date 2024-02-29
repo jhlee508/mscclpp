@@ -84,7 +84,8 @@ TransportFlags::TransportFlags(detail::TransportFlagsBase bitset) : detail::Tran
 
 const TransportFlags NoTransports = TransportFlags();
 
-const TransportFlags AllIBTransports = Transport::IB0;
+const TransportFlags AllIBTransports = Transport::IB0 | Transport::IB1 | Transport::IB2 | Transport::IB3 |
+                                       Transport::IB4 | Transport::IB5 | Transport::IB6 | Transport::IB7;
 
 const TransportFlags AllTransports = AllIBTransports | Transport::CudaIpc;
 

@@ -24,7 +24,9 @@ int rankToNode(int rank) {
 }
 
 mscclpp::Transport ibIdToTransport(int id) {
-  mscclpp::Transport IBs[] = {mscclpp::Transport::IB0};
+  mscclpp::Transport IBs[] = {mscclpp::Transport::IB0, mscclpp::Transport::IB1, mscclpp::Transport::IB2,
+                              mscclpp::Transport::IB3, mscclpp::Transport::IB4, mscclpp::Transport::IB5,
+                              mscclpp::Transport::IB6, mscclpp::Transport::IB7};
   return IBs[id];
 }
 
